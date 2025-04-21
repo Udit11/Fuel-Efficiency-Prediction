@@ -66,8 +66,8 @@ The following features are included in the dataset:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/Udit11/2025-Fuel-Efficiency-Prediction.git
-   cd <repository_name>
+   git clone https://github.com/Udit11/Fuel-Efficiency-Prediction.git
+   cd Fuel-Efficiency-Prediction
 
 2. Install dependencies:
    pip install -r requirements.txt
