@@ -28,6 +28,7 @@ def preprocess_input(data, feature_columns, pca):
 
 # Load model and PCA
 def load_model():
+    """Loads the model"""
     model = joblib.load('Project 5 (Fuel Efficiency)/fuel_eff_model.pkl')
     pca = joblib.load('Project 5 (Fuel Efficiency)/pca_transformer.pkl')
     # feature_columns = joblib.load('Project 5 (Fuel Efficiency)/feature_columns.pkl')
