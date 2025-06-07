@@ -1,96 +1,166 @@
-# Fuel Efficiency Prediction
+# 🚗 Fuel Efficiency Prediction
 
-## Project Overview
+A machine learning solution for predicting vehicle fuel consumption using a variety of technical and environmental features. Designed to support manufacturers and researchers in optimizing automobile designs for performance and sustainability.
 
-This project focuses on developing a machine learning model to predict the fuel consumption of a vehicle based on various features such as mass, engine capacity, fuel type, emissions, energy consumption, and other relevant characteristics. The model helps manufacturers and researchers optimize vehicle designs for better performance.
+---
 
-### Dataset Details
+## 📈 Project Overview
 
-The dataset contains 1 million records from the `Automobile_data` table in the `Database.db` SQLite database:
-- **Training Data**: First 700k records.
-- **Validation Data**: Next 200k records.
-- **Test Data**: Remaining 100k records (used as live data for production evaluation).
+This project focuses on developing a predictive model for **fuel efficiency** using a comprehensive automotive dataset. Key highlights:
 
-### Deliverables
+- Supervised regression using **Random Forest**
+- Preprocessing: missing value handling, encoding, scaling, PCA
+- Exposed via a **Flask API** for real-time prediction
+
+---
+
+## 🗃️ Dataset Details
+
+- **Source**: `Automobile_data` table in `Database.db`
+- **Records**: 1,000,000 entries
+- **Splits**:
+  - Training: 700,000 rows
+  - Validation: 200,000 rows
+  - Testing: 100,000 rows (simulates real-world/live data)
+
+---
+
+## 📦 Deliverables
 
 1. Python scripts:
-   - `training.py`: For model training and evaluation.
-   - `prediction.py`: Flask API for real-time predictions.
-   - `testing.py`: For batch evaluation on validation and test data.
-2. Final machine learning model saved as `fuel_eff_model.pkl`.
-3. PCA transformer for dimensionality reduction saved as `pca_transformer.pkl`.
+   - `training.py`: Data preprocessing + model training
+   - `testing.py`: Evaluation on validation/test sets
+   - `prediction.py`: Flask-based inference API
+2. Saved artifacts:
+   - `fuel_eff_model.pkl`: Trained model
+   - `pca_transformer.pkl`: PCA transformation
+3. Dependency list: `requirements.txt`
 
 ---
 
-## Features
+## 🧮 Features Used
 
-The following features are included in the dataset:
-- `r`: Vehicle type.
-- `m (kg)`: Mass of the vehicle in kilograms.
-- `Mt`: Transmission type.
-- `Ewltp (g/km)`: Emission levels in grams per kilometer.
-- `Ft`: Fuel type (e.g., petrol, diesel, electric, LPG).
-- `Fm`: Fuel mode.
-- `ec (cm3)`: Engine capacity in cubic centimeters.
-- `ep (KW)`: Engine power in kilowatts.
-- `Erwltp (g/km)`: Real-world emissions in grams per kilometer.
-- `Electric range (km)`: Range in kilometers for electric vehicles.
+| Feature                | Description                                      |
+|------------------------|--------------------------------------------------|
+| `r`                    | Vehicle type                                     |
+| `m (kg)`               | Vehicle mass in kilograms                        |
+| `Mt`                   | Transmission type                                |
+| `Ewltp (g/km)`         | CO₂ emissions (WLTP standard)                    |
+| `Ft`                   | Fuel type (petrol, diesel, electric, LPG, etc.) |
+| `Fm`                   | Fuel mode                                        |
+| `ec (cm3)`             | Engine capacity                                  |
+| `ep (KW)`              | Engine power                                     |
+| `Erwltp (g/km)`        | Real-world CO₂ emissions                         |
+| `Electric range (km)`  | EV range (if applicable)                         |
 
 ---
 
-## Model Development
+## 🧪 Model Development
 
-### Preprocessing Steps
+### 🔧 Preprocessing Steps
 
-1. Handling missing values:
-   - Features with more than 70% missing values were removed unless significantly correlated with the target variable.
-   - Remaining missing values were imputed using median or mode, depending on the data type.
-2. Outlier handling using the interquartile range (IQR) method.
-3. Encoding categorical features:
-   - `Ft` and `Fm` were label-encoded.
-4. Feature scaling using `StandardScaler`.
-5. Dimensionality reduction using Principal Component Analysis (PCA).
+- **Missing Values**:
+  - Drop features with >70% missing unless highly correlated with target
+  - Median/Mode imputation for remaining
+- **Outliers**:
+  - Removed using the IQR method
+- **Encoding**:
+  - Label Encoding for categorical (`Ft`, `Fm`)
+- **Scaling**:
+  - `StandardScaler`
+- **Dimensionality Reduction**:
+  - PCA for noise reduction and performance boost
 
-### Model Details
+### 🤖 Model Configuration
 
-- **Algorithm**: Random Forest Regressor
-- **Evaluation Metrics**:
+- **Model**: Random Forest Regressor
+- **Metrics**:
   - Mean Squared Error (MSE)
-  - R2 Score
+  - R² Score
 
 ---
 
-## Usage
+## 🛠️ Usage Guide
 
-### Installation
+### 🔧 Installation
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/Udit11/Fuel-Efficiency-Prediction.git
-   cd Fuel-Efficiency-Prediction
+```bash
+git clone https://github.com/Udit11/Fuel-Efficiency-Prediction.git
+cd Fuel-Efficiency-Prediction
+pip install -r requirements.txt
+```
 
-2. Install dependencies:
-   pip install -r requirements.txt
+---
 
-### Training the Model
-Run the training script to preprocess the data, train the model, and save the artifacts:
+### 🏋️‍♂️ Train the Model
+
+```bash
 python training.py
-Artifacts generated:
-    fuel_eff_model.pkl: Trained model.
-    pca_transformer.pkl: PCA transformer.
+```
 
-### Testing the Model
-Evaluate the model on validation and test datasets:
+**Artifacts Saved:**
+- `fuel_eff_model.pkl`
+- `pca_transformer.pkl`
+
+---
+
+### 📊 Evaluate the Model
+
+```bash
 python testing.py
+```
 
-### Prediction Using Flask API
-1. Start the Flask server:
+Used for both validation and test set evaluation.
+
+---
+
+### 🌐 Prediction via Flask API
+
+1. **Start the Server:**
+
+```bash
 python prediction.py
-2. Send a POST request to the /predict endpoint with input JSON data:
-curl -X POST -H "Content-Type: application/json" -d '{"r": ..., "m (kg)": ..., "Mt": ..., "Ewltp (g/km)": ..., "Ft": ..., "Fm": ..., "ec (cm3)": ..., "ep (KW)": ..., "Erwltp (g/km)": ..., "Electric range (km)": ...}' http://127.0.0.1:5000/predict
+```
 
-### Results
-Feature Importance: Key predictors include m (kg), ec (cm3), and ep (KW).
-Model Performance:
-MSE: 0.07310647451241513
-R2 Score: 0.8301555674837338
+2. **Send a POST Request:**
+
+```bash
+curl -X POST -H "Content-Type: application/json" -d '{
+  "r": "...",
+  "m (kg)": 1350,
+  "Mt": "...",
+  "Ewltp (g/km)": 105.3,
+  "Ft": "petrol",
+  "Fm": "...",
+  "ec (cm3)": 1498,
+  "ep (KW)": 88,
+  "Erwltp (g/km)": 112.5,
+  "Electric range (km)": 0
+}' http://127.0.0.1:5000/predict
+```
+
+---
+
+## 📊 Results
+
+- **Key Predictors**: `m (kg)`, `ec (cm3)`, `ep (KW)`
+- **Performance**:
+  - **MSE**: 0.0731
+  - **R² Score**: 0.8302
+
+---
+
+## 📜 License
+
+This project is licensed under the **MIT License**.
+
+---
+
+## 👨‍💻 Author
+
+**Udit Srivastava**  
+AI/ML Engineer | MSc in Computing (AI), Dublin City University  
+📧 Email: uditsrivastava2347@gmail.com  
+🔗 [LinkedIn](https://www.linkedin.com/in/udit-srivastava/)
+
+---
